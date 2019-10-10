@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot.mapper.UserMapper" >
+
+        <!-- 用户映射集 -->
+        <resultMap id="user" type="com.example.springboot.entity.User">
+                <id column="id" property="id" />
+                <result column="user_name" property="username" />
+                <result column="user_password" property="password" />
+        </resultMap>
+
+        <!-- 插入用户 -->
+        <insert id="addUser" parameterType="com.example.springboot.entity.User" useGeneratedKeys="true" >
+                insert into  user(user_name,user_password) values(#{username},#{password})
+        </insert>
+
+        <!-- 更新用户 -->
+        <update id="updateUser">
+                update user
+                <set>
+                        <if test="username != null">user_name=#{username},</if>
+                        <if test="password != null">user_password=#{password},</if>
+                </set>
+                where id=#{id}
+        </update>
+
+        <!-- 删除用户  -->
+        <delete id="deleteById" parameterType="java.lang.Long">
+                DELETE FROM user WHERE id = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!-- 根据id查询用户  -->
+        <select id="findById" parameterType="java.lang.Long" resultType="com.example.springboot.entity.User">
+                select * from   user  where id = #{id,jdbcType=BIGINT}
+        </select>
+
+        <!--  根据用户名模糊查询  -->
+        <select id="findByUserName" resultMap="user">
+                select * from user
+                <if test="username != null">
+                        where user_name like concat('%',#{username},'%')
+                </if>
+
+        </select>
+
+        <!--  根据密码模糊查询  -->
+        <select id="findByPassword" resultMap="user">
+                select * from user
+                <if test="password != null">
+                        where user_password like concat('%',#{password},'%')
+                </if>
+
+        </select>
+
+        <!-- 统计用户数量 -->
+        <select id="count"  resultType="java.lang.Long">
+                SELECT COUNT(*) FROM user
+        </select>
+
+</mapper>
