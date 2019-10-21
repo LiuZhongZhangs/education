@@ -21,8 +21,9 @@ import java.util.Date;
 public class TestController {
     private Logger logger = Logger.getLogger (TestController.class);
 
+    @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
     @RequestMapping("/hello")
-    public @ResponseBody String HelloWorld(){
+    public @ResponseBody String helloWorld(){
         for (int i = 0; i < 1000 ; i++) {
             logger.debug ("debug"+i);
             logger.info ("info"+i);
